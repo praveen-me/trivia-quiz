@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
 import { getQuestion } from "../api";
 import Question from "./Question";
@@ -54,11 +56,29 @@ export default function Quiz() {
     await getNewQuestion();
   }
 
-  function handleEndTrivia() {}
+  function handleEndTrivia() {
+    confirmAlert({
+      title: "Confirm to exit Quiz?",
+      message: "Are you sure to do this?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            dispatch(actions.resetState());
+          },
+          className: "error-button",
+        },
+        {
+          label: "No",
+          onClick: () => {
+            return null;
+          },
+        },
+      ],
+    });
+  }
 
   async function getNewQuestion() {
-    console.log("called");
-
     try {
       setIsLoading(true);
 

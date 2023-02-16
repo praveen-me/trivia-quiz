@@ -16,6 +16,8 @@ export const SET_TOTAL = "SET_TOTAL";
 
 export const SET_QUESTION = "SET_QUESTION";
 
+export const RESET_STATE = "RESET_STATE";
+
 export interface ISetUser {
   type: typeof SET_USER;
   payload: {
@@ -28,6 +30,10 @@ export interface ISetTotal {
   type: typeof SET_TOTAL;
 }
 
+export interface IResetState {
+  type: typeof RESET_STATE;
+}
+
 export interface ISetQuestion {
   type: typeof SET_QUESTION;
   payload: {
@@ -35,7 +41,7 @@ export interface ISetQuestion {
   };
 }
 
-type RootActionType = ISetQuestion | ISetUser | ISetTotal;
+type RootActionType = ISetQuestion | ISetUser | ISetTotal | IResetState;
 
 const initState: IInitState = {
   user: {
@@ -51,8 +57,6 @@ function reducer(state = initState, action: RootActionType): IInitState {
   switch (action.type) {
     case SET_USER: {
       const { payload } = action;
-
-      console.log({ payload });
       return {
         ...state,
         user: {
@@ -77,6 +81,10 @@ function reducer(state = initState, action: RootActionType): IInitState {
         currentQuestion: payload.question,
         totalQuestions: state.totalQuestions + 1,
       };
+    }
+
+    case RESET_STATE: {
+      return initState;
     }
 
     default:
@@ -109,19 +117,12 @@ const actions = {
       },
     };
   },
+  resetState(): IResetState {
+    return {
+      type: RESET_STATE,
+    };
+  },
 };
-
-// export default function useTriviaStore(): {
-//   state: IInitState;
-//   dispatch: Dispatch<RootActionType>;
-//   actions: typeof actions;
-// } {
-//   const [state, dispatch] = useReducer(reducer, initState);
-
-//   console.log({ state });
-
-//   return { state, dispatch, actions };
-// };
 
 const TriviaContext = createContext({
   state: initState,

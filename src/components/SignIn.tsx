@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import { object, string } from "yup";
 import storage from "../lib/storage";
 import { useTriviaStore } from "../utils/useTriviaStore";
+import { useState } from "react";
 
 let signInScheme = object({
   email: string().email().required(),
@@ -24,6 +25,7 @@ export default function SignIn() {
     onSubmit: handleSubmit,
     validationSchema: signInScheme,
   });
+  const [error, setError] = useState("");
 
   async function getInitialUser(): Promise<ISignInScheme> {
     const email = await storage.get("email");
@@ -44,7 +46,7 @@ export default function SignIn() {
     ) {
       dispatch(actions.setUser({ isAuthenticated: true, email: values.email }));
     } else {
-      console.log("Something is wrong");
+      setError("User Credentials are wrong.");
     }
   }
 
@@ -94,6 +96,8 @@ export default function SignIn() {
           Submit
         </button>
       </form>
+
+      {error && <strong className="error">{error}</strong>}
     </div>
   );
 }
