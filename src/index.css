@@ -38,6 +38,10 @@ code {
   color: white;
 }
 
+.error-button:hover {
+  color: white;
+}
+
 .button-center {
   justify-content: space-between;
   align-items: center;
@@ -47,4 +51,13 @@ code {
 
 .loader-wrapper {
   height: 50vh;
+}
+
+.error#email:focus {
+  border: 1px solid red !important;
+}
+
+.top-info {
+  display: flex;
+  justify-content: space-between;
 }

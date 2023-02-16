@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import "./App.css";
+
 import SignIn from "./components/SignIn";
 import setup from "./lib/setup";
 import Quiz from "./components/Quiz";
@@ -13,11 +13,9 @@ function App() {
     setup();
   }, []);
 
-  console.log(state.user);
-
   return (
     <div className="App">
-      <>{state.user.isAuthenticated ? <Quiz /> : <SignIn />}</>
+      {state.user.isAuthenticated ? <Quiz /> : <SignIn />}
     </div>
   );
 }

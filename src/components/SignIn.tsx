@@ -15,11 +15,11 @@ interface ISignInScheme {
 }
 
 export default function SignIn() {
-  const { actions, state, dispatch } = useTriviaStore();
+  const { actions, dispatch } = useTriviaStore();
   const formik = useFormik<ISignInScheme>({
     initialValues: {
-      email: "praveen@email.com",
-      password: "1234qwer",
+      email: "",
+      password: "",
     },
     onSubmit: handleSubmit,
     validationSchema: signInScheme,
@@ -38,8 +38,6 @@ export default function SignIn() {
   async function handleSubmit(values: ISignInScheme) {
     const initValues = await getInitialUser();
 
-    console.log({ initValues });
-
     if (
       initValues.email === values.email &&
       initValues.password === values.password
@@ -50,16 +48,13 @@ export default function SignIn() {
     }
   }
 
-  // console.log({ state });
-
   return (
-    <div className="container main-wrapper">
+    <div className="main-wrapper">
       <form
         onSubmit={(event) => {
           event.preventDefault();
           formik.handleSubmit();
         }}
-        className="main-wrapper"
       >
         <div className="center vertical-gutter">
           <h3>Log In</h3>
@@ -75,6 +70,7 @@ export default function SignIn() {
               formik.setFieldValue("email", event.target.value);
             }}
             value={formik.values.email}
+            className={formik.errors.email ? "error" : ""}
           />
         </div>
         <div>
@@ -90,7 +86,11 @@ export default function SignIn() {
             value={formik.values.password}
           />
         </div>
-        <button type="submit" className="button-primary">
+        <button
+          type="submit"
+          className="button-primary"
+          disabled={Object.keys(formik.errors).length > 0}
+        >
           Submit
         </button>
       </form>

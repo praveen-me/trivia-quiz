@@ -8,8 +8,8 @@ export const keys = {
 
 class Storage {
   init() {
-    this.set("email", "praveen@email.com");
-    this.set("password", "1234qwer");
+    this.set("email", process.env.REACT_APP_LOGIN_EMAIL as string);
+    this.set("password", process.env.REACT_APP_LOGIN_PASSWORD as string);
   }
 
   set(key: keyof typeof keys, value: string | number | boolean | object): void {

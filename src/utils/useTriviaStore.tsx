@@ -1,10 +1,4 @@
-import React, {
-  Dispatch,
-  ReactNode,
-  createContext,
-  useContext,
-  useReducer,
-} from "react";
+import { ReactNode, createContext, useContext, useReducer } from "react";
 
 interface IInitState {
   user: {
@@ -13,6 +7,7 @@ interface IInitState {
   };
   totalScore: number;
   currentQuestion: null | IQuestion;
+  totalQuestions: number;
 }
 
 export const SET_USER = "SET_USER";
@@ -49,6 +44,7 @@ const initState: IInitState = {
   },
   totalScore: 0,
   currentQuestion: null,
+  totalQuestions: 0,
 };
 
 function reducer(state = initState, action: RootActionType): IInitState {
@@ -79,6 +75,7 @@ function reducer(state = initState, action: RootActionType): IInitState {
       return {
         ...state,
         currentQuestion: payload.question,
+        totalQuestions: state.totalQuestions + 1,
       };
     }
 
@@ -139,16 +136,10 @@ interface ITriviaStoreProps {
 export function TriviaStore(props: ITriviaStoreProps) {
   const [state, dispatch] = useReducer(reducer, initState);
 
-  console.log({ state });
-
   return (
     <TriviaContext.Provider
       value={{
-        state: {
-          user: state.user,
-          totalScore: state.totalScore,
-          currentQuestion: state.currentQuestion,
-        },
+        state,
         dispatch,
         actions,
       }}

@@ -16,8 +16,13 @@ export default function Quiz() {
 
   const { currentQuestion } = state;
 
+  let initialized = false;
+
   useEffect(() => {
-    getNewQuestion();
+    if (!initialized) {
+      getNewQuestion();
+      initialized = true;
+    }
   }, []);
 
   useEffect(() => {
@@ -31,6 +36,9 @@ export default function Quiz() {
         setOptions(shuffleArray(items));
 
         setCurrentValue(items[0]);
+      } else if (currentQuestion.type === "boolean") {
+        setOptions(shuffleArray(["True", "False"]));
+        setCurrentValue("False");
       }
     }
   }, [currentQuestion]);
@@ -42,13 +50,15 @@ export default function Quiz() {
 
     if (isCorrectAnswer) {
       dispatch(actions.setTotal());
-      await getNewQuestion();
     }
+    await getNewQuestion();
   }
 
   function handleEndTrivia() {}
 
   async function getNewQuestion() {
+    console.log("called");
+
     try {
       setIsLoading(true);
 
@@ -68,7 +78,10 @@ export default function Quiz() {
 
   return (
     <div className="container">
-      <h2 className="vertical-gutter">Your Score: {state.totalScore}</h2>
+      <div className="top-info">
+        <h2 className="vertical-gutter">Your Score: {state.totalScore}</h2>
+        <h2 className="vertical-gutter">Question No: {state.totalQuestions}</h2>
+      </div>
 
       {isLoading ? (
         <div className="center main-wrapper loader-wrapper">
