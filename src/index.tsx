@@ -1,6 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "./stylesheets/normalize.css";
+import "./stylesheets/skeleton.css";
 import "./index.css";
+
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { TriviaStore } from "./utils/useTriviaStore";

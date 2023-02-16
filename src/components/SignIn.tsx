@@ -44,7 +44,6 @@ export default function SignIn() {
       initValues.email === values.email &&
       initValues.password === values.password
     ) {
-      console.log("Form is submitted");
       dispatch(actions.setUser({ isAuthenticated: true, email: values.email }));
     } else {
       console.log("Something is wrong");
@@ -54,17 +53,17 @@ export default function SignIn() {
   // console.log({ state });
 
   return (
-    <div>
-      <div>
-        <h3>Log In</h3>
-      </div>
-
+    <div className="container main-wrapper">
       <form
         onSubmit={(event) => {
           event.preventDefault();
           formik.handleSubmit();
         }}
+        className="main-wrapper"
       >
+        <div className="center vertical-gutter">
+          <h3>Log In</h3>
+        </div>
         <div>
           <label htmlFor="email">Email</label>
           <input
@@ -78,8 +77,8 @@ export default function SignIn() {
             value={formik.values.email}
           />
         </div>
-        <label htmlFor="password">Password</label>
         <div>
+          <label htmlFor="password">Password</label>
           <input
             id="password"
             name="password"
@@ -91,7 +90,9 @@ export default function SignIn() {
             value={formik.values.password}
           />
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit" className="button-primary">
+          Submit
+        </button>
       </form>
     </div>
   );

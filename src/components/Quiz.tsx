@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { getQuestion } from "../api";
 import Question from "./Question";
 import { useTriviaStore } from "../utils/useTriviaStore";
 import shuffleArray from "../utils/shuffleArray";
+import Loader from "./Loader";
 
 export default function Quiz() {
   //@ts-ignore
   const { actions, dispatch, state } = useTriviaStore();
   const [currentValue, setCurrentValue] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const [options, setOptions] = useState<string[]>([]);
 
   const { currentQuestion } = state;
 
   useEffect(() => {
-    console.log("here");
     getNewQuestion();
   }, []);
 
@@ -48,30 +49,59 @@ export default function Quiz() {
   function handleEndTrivia() {}
 
   async function getNewQuestion() {
-    const response = await getQuestion();
+    try {
+      setIsLoading(true);
 
-    const data: {
-      results: IQuestion[];
-    } = await response.json();
+      const response = await getQuestion();
 
-    dispatch(actions.setQuestion(data.results[0]));
+      const data: {
+        results: IQuestion[];
+      } = await response.json();
+
+      dispatch(actions.setQuestion(data.results[0]));
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
-  if (!currentQuestion) return null;
-
   return (
-    <div>
-      <h2>Your Score: {state.totalScore}</h2>
+    <div className="container">
+      <h2 className="vertical-gutter">Your Score: {state.totalScore}</h2>
 
-      <Question
-        question={currentQuestion}
-        currentValue={currentValue}
-        setCurrentValue={setCurrentValue}
-        options={options}
-      />
-
-      <button onClick={handleEndTrivia}>End Trivia</button>
-      <button onClick={handleNextQuestion}>Next Question</button>
+      {isLoading ? (
+        <div className="center main-wrapper loader-wrapper">
+          <Loader />
+        </div>
+      ) : (
+        currentQuestion && (
+          <>
+            <Question
+              question={currentQuestion}
+              currentValue={currentValue}
+              setCurrentValue={setCurrentValue}
+              options={options}
+            />
+            <div className="row button-center">
+              <button
+                onClick={handleEndTrivia}
+                className="error-button"
+                disabled={isLoading}
+              >
+                End Trivia
+              </button>
+              <button
+                onClick={handleNextQuestion}
+                className="button-primary"
+                disabled={isLoading}
+              >
+                Next Question
+              </button>
+            </div>
+          </>
+        )
+      )}
     </div>
   );
 }

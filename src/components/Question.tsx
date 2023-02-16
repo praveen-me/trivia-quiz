@@ -22,7 +22,7 @@ export default function Question(props: IQuestionProps) {
 
       <form>
         {options.map((option) => (
-          <label key={option}>
+          <label key={option} className="row">
             <input
               type="radio"
               value={option}
@@ -32,7 +32,10 @@ export default function Question(props: IQuestionProps) {
               checked={option === currentValue}
               onChange={handleChange}
             />
-            <div dangerouslySetInnerHTML={{ __html: option }} />
+            <div
+              dangerouslySetInnerHTML={{ __html: option }}
+              className="option-container"
+            />
           </label>
         ))}
       </form>
