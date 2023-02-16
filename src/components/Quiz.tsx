@@ -34,13 +34,18 @@ export default function Quiz() {
     }
   }, [currentQuestion]);
 
-  handleNextQuestion() {
+  async function handleNextQuestion() {
+    const isCorrectAnswer =
+      currentQuestion?.correct_answer &&
+      currentValue === currentQuestion?.correct_answer;
 
+    if (isCorrectAnswer) {
+      dispatch(actions.setTotal());
+      await getNewQuestion();
+    }
   }
 
-  handleNextQuestion() {
-    
-  }
+  function handleEndTrivia() {}
 
   async function getNewQuestion() {
     const response = await getQuestion();
@@ -65,8 +70,8 @@ export default function Quiz() {
         options={options}
       />
 
-      <button>End Trivia</button>
-      <button>Next Question</button>
+      <button onClick={handleEndTrivia}>End Trivia</button>
+      <button onClick={handleNextQuestion}>Next Question</button>
     </div>
   );
 }

@@ -12,7 +12,7 @@ interface IInitState {
     email: string;
   };
   totalScore: number;
-  currentQuestion: null;
+  currentQuestion: null | IQuestion;
 }
 
 export const SET_USER = "SET_USER";
@@ -56,10 +56,10 @@ function reducer(state = initState, action: RootActionType): IInitState {
     case SET_USER: {
       const { payload } = action;
 
+      console.log({ payload });
       return {
         ...state,
         user: {
-          ...state.user,
           isAuthenticated: payload.isAuthenticated,
           email: payload.email,
         },
@@ -75,8 +75,6 @@ function reducer(state = initState, action: RootActionType): IInitState {
 
     case SET_QUESTION: {
       const { payload } = action;
-
-      console.log({ payload });
 
       return {
         ...state,
@@ -128,7 +126,11 @@ const actions = {
 //   return { state, dispatch, actions };
 // };
 
-const TriviaContext = createContext(null);
+const TriviaContext = createContext({
+  state: initState,
+  dispatch: (k: RootActionType) => {},
+  actions,
+});
 
 interface ITriviaStoreProps {
   children: ReactNode;
@@ -137,13 +139,22 @@ interface ITriviaStoreProps {
 export function TriviaStore(props: ITriviaStoreProps) {
   const [state, dispatch] = useReducer(reducer, initState);
 
+  console.log({ state });
+
   return (
-    <>
-      {/*@ts-ignore*/}
-      <TriviaContext.Provider value={{ state, dispatch, actions }}>
-        {props.children}
-      </TriviaContext.Provider>
-    </>
+    <TriviaContext.Provider
+      value={{
+        state: {
+          user: state.user,
+          totalScore: state.totalScore,
+          currentQuestion: state.currentQuestion,
+        },
+        dispatch,
+        actions,
+      }}
+    >
+      {props.children}
+    </TriviaContext.Provider>
   );
 }
 

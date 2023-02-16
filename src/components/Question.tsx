@@ -32,7 +32,7 @@ export default function Question(props: IQuestionProps) {
               checked={option === currentValue}
               onChange={handleChange}
             />
-            {option}
+            <div dangerouslySetInnerHTML={{ __html: option }} />
           </label>
         ))}
       </form>
