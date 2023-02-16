@@ -2,6 +2,14 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Live Link
+
+https://trivia-quiz-n6kdrhnhc-praveen-me.vercel.app/
+
+## How to test the application
+
+In SignIn Authentication, please enter email `praveen@email.com` and password `1234qwer` or for test purpose either you can check `.env` file.
+
 ## Available Scripts
 
 In the project directory, you can run:
